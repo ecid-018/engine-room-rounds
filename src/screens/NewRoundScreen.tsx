@@ -7,6 +7,7 @@ import { ProgressSummary } from '../components/ProgressSummary';
 import { SearchBar } from '../components/SearchBar';
 import { ChecklistAccordion } from '../components/ChecklistAccordion';
 import { SubmitBar } from '../components/SubmitBar';
+import { EmptyState } from '../components/EmptyState';
 import { colors, spacing, typography } from '../theme';
 import { statusMapToAnswers } from '../utils/roundConversion';
 import { generateRoundId } from '../utils/id';
@@ -43,7 +44,7 @@ export function NewRoundScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={styles.safeArea} edges={['top', 'left', 'right', 'bottom']}>
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -83,19 +84,23 @@ export function NewRoundScreen() {
           contentContainerStyle={styles.scrollContent}
           keyboardShouldPersistTaps="handled"
         >
-          <ChecklistAccordion
-            sections={form.sections}
-            expanded={form.expanded}
-            onToggleSection={form.toggleSection}
-            status={form.status}
-            onSelectTier={form.setTier}
-            remarks={form.remarks}
-            openRemarkId={form.openRemarkId}
-            onToggleRemark={form.toggleRemark}
-            onChangeRemark={form.setRemarkText}
-            readOnly={false}
-            forceOpenAll={form.query.trim().length > 0}
-          />
+          {form.sections.length === 0 ? (
+            <EmptyState title="No checkpoints match your search" subtitle="Try a different name or area." />
+          ) : (
+            <ChecklistAccordion
+              sections={form.sections}
+              expanded={form.expanded}
+              onToggleSection={form.toggleSection}
+              status={form.status}
+              onSelectTier={form.setTier}
+              remarks={form.remarks}
+              openRemarkId={form.openRemarkId}
+              onToggleRemark={form.toggleRemark}
+              onChangeRemark={form.setRemarkText}
+              readOnly={false}
+              forceOpenAll={form.query.trim().length > 0}
+            />
+          )}
         </ScrollView>
 
         <SubmitBar

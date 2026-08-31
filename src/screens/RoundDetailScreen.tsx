@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { getRoundById } from '../storage/roundsRepository';
@@ -8,9 +8,11 @@ import type { HistoryStackParamList } from '../navigation/types';
 import { CHECKLIST } from '../data/checklist';
 import { groupData } from '../utils/grouping';
 import { answersToStatusMap } from '../utils/roundConversion';
+import { exportRoundAsPdf } from '../utils/exportPdf';
 import { HeaderFields } from '../components/HeaderFields';
 import { ChecklistAccordion } from '../components/ChecklistAccordion';
 import { TierCountBadge } from '../components/TierCountBadge';
+import { SubmitBar } from '../components/SubmitBar';
 import { colors, spacing, typography } from '../theme';
 
 type Props = NativeStackScreenProps<HistoryStackParamList, 'RoundDetail'>;
@@ -22,6 +24,19 @@ export function RoundDetailScreen({ route, navigation }: Props) {
   const { roundId } = route.params;
   const [round, setRound] = useState<RoundEntry | null | undefined>(undefined);
   const [expanded, setExpanded] = useState<Set<string>>(() => new Set(ALL_SECTION_NAMES));
+  const [exporting, setExporting] = useState(false);
+
+  async function handleExport() {
+    if (!round || exporting) return;
+    setExporting(true);
+    try {
+      await exportRoundAsPdf(round);
+    } catch (err) {
+      Alert.alert('Could not export round', err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setExporting(false);
+    }
+  }
 
   useEffect(() => {
     getRoundById(roundId).then(setRound);
@@ -70,7 +85,7 @@ export function RoundDetailScreen({ route, navigation }: Props) {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
+    <SafeAreaView style={styles.safeArea} edges={['left', 'right', 'bottom']}>
       <View style={styles.header}>
         <HeaderFields
           date={round.date}
@@ -94,6 +109,8 @@ export function RoundDetailScreen({ route, navigation }: Props) {
           readOnly
         />
       </ScrollView>
+
+      <SubmitBar label={exporting ? 'Preparing…' : 'Export as PDF'} onPress={handleExport} disabled={exporting} />
     </SafeAreaView>
   );
 }
