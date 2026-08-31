@@ -1,0 +1,17 @@
+{
+  "name": "Engine Room Rounds",
+  "short_name": "ER Rounds",
+  "description": "Offline engine room round-logging checklist for MV Queen Trader and sister vessels.",
+  "start_url": "/engine-room-rounds/",
+  "scope": "/engine-room-rounds/",
+  "id": "/engine-room-rounds/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    { "src": "/engine-room-rounds/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/engine-room-rounds/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/engine-room-rounds/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

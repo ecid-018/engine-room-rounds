@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="%LANG_ISO_CODE%">
+  <head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>%WEB_TITLE%</title>
+
+    <!-- PWA: installable + offline. Paths are hardcoded to the GitHub Pages
+         subpath (matches expo.experiments.baseUrl in app.json) since this
+         static template has no access to that config value. Update both if
+         the repo/baseUrl ever changes. -->
+    <link rel="manifest" href="/engine-room-rounds/manifest.json" />
+    <link rel="apple-touch-icon" href="/engine-room-rounds/apple-touch-icon.png" />
+    <meta name="theme-color" content="#020617" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ER Rounds" />
+    <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
+    <style id="expo-reset">
+      /* These styles make the body full-height */
+      html,
+      body {
+        height: 100%;
+      }
+      /* These styles disable body scrolling if you are using <ScrollView> */
+      body {
+        overflow: hidden;
+      }
+      /* These styles make the root element full-height */
+      #root {
+        display: flex;
+        height: 100%;
+        flex: 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Use static rendering with Expo Router to support running without JavaScript. -->
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <!-- The root element for your Expo app. -->
+    <div id="root"></div>
+
+    <!-- Register the offline service worker (see public/sw.js). Runs after
+         the app has loaded so it never delays first paint. -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/engine-room-rounds/sw.js').catch(function () {});
+        });
+      }
+    </script>
+  </body>
+</html>
