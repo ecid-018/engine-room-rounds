@@ -1,17 +1,18 @@
 {
   "expo": {
-    "name": "Rounds",
-    "slug": "Rounds",
+    "name": "Engine Room Rounds",
+    "slug": "engine-room-rounds",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#020617",
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#020617",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -19,7 +20,14 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/favicon.png",
+      "backgroundColor": "#020617"
+    },
+    "experiments": {
+      "baseUrl": "/engine-room-rounds"
+    },
+    "plugins": [
+      "@react-native-community/datetimepicker"
+    ]
   }
 }

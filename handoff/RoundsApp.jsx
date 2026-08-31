@@ -1,0 +1,307 @@
+import React, { useState, useMemo } from "react";
+
+const CHECKLIST = [{"id": "1.1", "section": "Air Condition Room", "subGroup": null, "checkpoint": "Air Cond. Unit and Panel", "subchecks": [{"label": null, "tickers": ["OK / No Alarms / NO Leakage / NO abnormal noise", "Alarm Active", "Fault"]}]}, {"id": "1.2", "section": "Air Condition Room", "subGroup": null, "checkpoint": "Provision Reefier Units and Panel", "subchecks": [{"label": null, "tickers": ["OK / No Alarms / NO Leakage / NO abnormal noise", "Alarm Active", "Fault"]}]}, {"id": "1.3", "section": "Air Condition Room", "subGroup": null, "checkpoint": "Grease Trap", "subchecks": [{"label": null, "tickers": ["Clean", "Needs Emptying", "Full"]}]}, {"id": "2.1", "section": "Fire Station Room", "subGroup": null, "checkpoint": "Quck Closing Valve Air Bottles", "subchecks": [{"label": null, "tickers": ["Pressure OK", "Pressure Out of Range", "N/A"]}]}, {"id": "2.2", "section": "Fire Station Room", "subGroup": null, "checkpoint": "Ventilation Damper Air Bottles", "subchecks": [{"label": null, "tickers": ["Pressure OK", "Pressure Out of Range", "N/A"]}]}, {"id": "2.3", "section": "Fire Station Room", "subGroup": null, "checkpoint": "Fire Control Detector Panels", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "2.4", "section": "Fire Station Room", "subGroup": null, "checkpoint": "Water Mist Control Panels", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "2.5", "section": "Fire Station Room", "subGroup": null, "checkpoint": "Isolation Valve - Normally Open", "subchecks": [{"label": null, "tickers": ["Set Correctly", "Incorrect Position", "N/A"]}]}, {"id": "3.1", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "Boiler Control Panel", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "3.2", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "Boiler Oil Fired Burner", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "3.3", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "Incinerator Flue Gas fan", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "3.4", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "Boiler Manometers", "subchecks": [{"label": null, "tickers": ["Normal Reading", "Abnormal Reading", "Not Readable"]}]}, {"id": "3.5", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "Boiler Water Sight Glass", "subchecks": [{"label": null, "tickers": ["Normal Reading", "Abnormal Reading", "Not Readable"]}]}, {"id": "3.6", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "Expansion Tank Level", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "3.7-NO1", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "E/R Ventilation Fans (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "3.7-NO2", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "E/R Ventilation Fans (NO 2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "3.7-NO3", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "E/R Ventilation Fans (NO 3)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "3.7-NO4", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "E/R Ventilation Fans (NO 4)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "3.8", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "E/R Funnel Dampers", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "3.9-NO1", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "GE SCR Reactors, Nozzles and Pump Unit (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "3.9-NO2", "section": "Boiler & Economizer Area", "subGroup": null, "checkpoint": "GE SCR Reactors, Nozzles and Pump Unit (NO2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "4.1-NO1", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Aft Mooring Winch Hydraulic Pump Unit (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "4.1-NO2", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Aft Mooring Winch Hydraulic Pump Unit (NO2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "4.2", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Water Mist Pump Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "4.3", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Steering Gear and Autopilot Panels", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "4.4", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Steering Gear Hydraulic Tanks", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "4.5", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Steering Gear Rams and Packing Leakage", "subchecks": [{"label": null, "tickers": ["Normal Leak", "Minor Leak", "Leak / Action Req'd"]}]}, {"id": "4.6", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Steering Gear Ram Pin and Linkage Grease", "subchecks": [{"label": null, "tickers": ["Adequately Greased", "Needs Greasing", "Fault"]}]}, {"id": "4.7", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Steering Gear Hydraulic Oil Filter Differential", "subchecks": [{"label": null, "tickers": ["Clean / Normal DP", "High Differential", "Bypassed"]}]}, {"id": "4.8", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Steering Gear Rudder Carrier Oil Level.", "subchecks": [{"label": null, "tickers": ["Normal Level", "Low or High Level", "Not Readable / No Oil"]}]}, {"id": "4.9-NO1", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Steering Gear Hydraulic Pumps and Motor (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "4.9-NO2", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Steering Gear Hydraulic Pumps and Motor (NO2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "4.10", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Grease Pump Station", "subchecks": [{"label": null, "tickers": ["Adequately Grease Level / AUTO", "Needs Grease", "Off, Manual Mode"]}]}, {"id": "4.11", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Emergency Fire Pump", "subchecks": [{"label": null, "tickers": ["Auto Standby / Suction Valve Open", "Not ready", "Fault / Abnormal"]}]}, {"id": "4.12", "section": "Steering Gear Room", "subGroup": null, "checkpoint": "Chemicals, Lub Oil and Grease Storage Area.", "subchecks": [{"label": null, "tickers": ["Clean / In order / Secured", "Needs Attention", "Leakage"]}]}, {"id": "5.1.1-NO1", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "Incinerator Unit (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.1.1-NO2", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "Incinerator Unit (NO2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.1.2", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "Incinerator WOT", "subchecks": [{"label": null, "tickers": ["Level Check / Temperature Normal", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.1.3", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "Incinerator MGO Tk", "subchecks": [{"label": null, "tickers": ["Level Check / Normal", "Needs Filling", "Fault / Abnormal / Leaks"]}]}, {"id": "5.2", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "Calorifier Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.3", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "UV Sterilization  Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.4", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "Hydrophore Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.5", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "SCR Air Compressor Unit and Air Bottle", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.6", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "Working Air Compressor Unit and Air Bottle", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.7", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "SCR Air Dryer Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.8", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "ME SCR Pump Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.9", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "ME SCR Reactor", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "5.10", "section": "Engine Upper Deck", "subGroup": "Incinerator", "checkpoint": "ME and GE SCR Panel", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "5.11.1", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "Urea Tank and Urea Emergency Water Wash Area", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low / Level High", "Overflow"]}]}, {"id": "5.11.2", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "ME Cylinder Oil Tank (LS)", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low / Level High", "Level High"]}]}, {"id": "5.11.3", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "ME Cylinder Oil Tank (HS)", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low / Level High", "Level High"]}]}, {"id": "5.11.4", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "FO Service Tank no. 1", "subchecks": [{"label": "Level", "tickers": ["Level Normal", "Level Low", "Empty"]}, {"label": "Temperature", "tickers": ["Temperature Normal", "Temperature Abnormal", "Empty"]}]}, {"id": "5.11.5", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "FO Service Tank no. 2", "subchecks": [{"label": "Level", "tickers": ["Level Normal", "Level Low", "Empty"]}, {"label": "Temperature", "tickers": ["Temperature Normal", "Temperature Abnormal", "Empty"]}]}, {"id": "5.11.6", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "FO Settling Tank", "subchecks": [{"label": "Level", "tickers": ["Level Normal", "Level Low / Level High", "Level High"]}, {"label": "Temperature", "tickers": ["Temperature Normal", "Temperature Abnormal", "Level High"]}]}, {"id": "5.11.7", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "MGO Service Tank", "subchecks": [{"label": "Level", "tickers": ["Level Normal", "Level Low", "Level High"]}, {"label": "Temperature", "tickers": ["Temperature Normal", "Temperature Abnormal", "Level High"]}]}, {"id": "5.11.8", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "ME Cylinder Oil Measuring Tank", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "5.12", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "Steam Distribution Valves", "subchecks": [{"label": null, "tickers": ["Open", "Closed", "Set as Required"]}]}, {"id": "5.13", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "ME SCR Nozzle", "subchecks": [{"label": null, "tickers": ["Normal", "Needs Attention", "Fault"]}]}, {"id": "5.14", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "Sea Chest Remote Pump / Indicator", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "5.15", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "UPS Batteries", "subchecks": [{"label": null, "tickers": ["OK / Charged", "Low Charge", "Fault"]}]}, {"id": "5.16", "section": "Engine Upper Deck", "subGroup": "Tanks", "checkpoint": "Water Softener Area", "subchecks": [{"label": null, "tickers": ["Clean / Tidy", "Needs Attention", "N/A"]}]}, {"id": "6.1", "section": "Engine Lower Deck", "subGroup": null, "checkpoint": "Cylinder Oil Heating Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.2", "section": "Engine Lower Deck", "subGroup": null, "checkpoint": "ME SCR Valves and EGB", "subchecks": [{"label": null, "tickers": ["Normal Position", "Needs Attention", "Set as Required"]}]}, {"id": "6.3", "section": "Engine Lower Deck", "subGroup": null, "checkpoint": "ME Turbocharger", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.4", "section": "Engine Lower Deck", "subGroup": null, "checkpoint": "ME Cylinder Heads", "subchecks": [{"label": null, "tickers": ["Normal", "Needs Attention", "Fault"]}]}, {"id": "6.5", "section": "Engine Lower Deck", "subGroup": null, "checkpoint": "ME HCUs", "subchecks": [{"label": null, "tickers": ["Normal", "Needs Attention", "Fault"]}]}, {"id": "6.6", "section": "Engine Lower Deck", "subGroup": null, "checkpoint": "ME Liner, JCW, Starting Air Piping", "subchecks": [{"label": null, "tickers": ["Normal", "Needs Attention", "Fault"]}]}, {"id": "6.7.1", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "BWTS Backwash Filter Unit and Pumps", "subchecks": [{"label": null, "tickers": ["Clean / Normal DP", "High Differential", "Bypassed"]}]}, {"id": "6.7.2", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "BWTS Panels", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "6.7.3", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "BWTS Air Pumps", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.7.4", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "BWTS TRO Sensor Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.7.5", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "BWTS Power Supply Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.8", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "Control Air Reservoir", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "6.9", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "Air Reducing Valve Units", "subchecks": [{"label": null, "tickers": ["Open", "Closed", "Set as Required"]}]}, {"id": "6.10", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "Emergency Air Reservoir", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "6.11", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "Emergency Air Compressor", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.12-NO1", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "Main Air Compressors (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.12-NO2", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "Main Air Compressors (NO2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.13", "section": "Engine Lower Deck", "subGroup": "BWTS Area", "checkpoint": "Main Air Reserovoirs", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "6.14.1", "section": "Engine Lower Deck", "subGroup": "Tanks", "checkpoint": "MGO Storage Tank", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "6.14.2", "section": "Engine Lower Deck", "subGroup": "Tanks", "checkpoint": "GE Sys Oil Storage Tank", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "6.14.3", "section": "Engine Lower Deck", "subGroup": "Tanks", "checkpoint": "GE Sys Oil Settling Tank", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "6.15", "section": "Engine Lower Deck", "subGroup": "Tanks", "checkpoint": "Boiler Atmospheric Condenser", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "6.16", "section": "Engine Lower Deck", "subGroup": "Tanks", "checkpoint": "Boiler Hotwell Tank", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "6.18.1", "section": "Engine Lower Deck", "subGroup": "Generator Engines", "checkpoint": "GE no. 1", "subchecks": [{"label": null, "tickers": ["Standby Ready / In AUTO", "Stopped / In Manual", "Fault / Abnormal / Tripped"]}, {"label": "Temperatures", "tickers": ["Temperatures NORMAl", "Temperatures Deviation", "Inoperable"]}, {"label": "Pressures", "tickers": ["Pressures NORMAL", "Pressures Deviation", "Inoperable"]}, {"label": "Leakages", "tickers": ["NO Leakages", "Minor Leakages", "Inoperable"]}, {"label": "Sump Tank", "tickers": ["Sump Tank Level OK", "Sump Tank High", "Inoperable"]}, {"label": "RPM, Frequency, Vibrations", "tickers": ["RPM, Frequency, Vibrations OK", "RPM, Frequency, Vibrations Observed Deviation", "Inoperable"]}]}, {"id": "6.18.2", "section": "Engine Lower Deck", "subGroup": "Generator Engines", "checkpoint": "GE no. 2", "subchecks": [{"label": null, "tickers": ["Standby Ready / In AUTO", "Stopped / In Manual", "Fault / Abnormal / Tripped"]}, {"label": "Temperatures", "tickers": ["Temperatures NORMAl", "Temperatures Deviation", "Inoperable"]}, {"label": "Pressures", "tickers": ["Pressures NORMAL", "Pressures Deviation", "Inoperable"]}, {"label": "Leakages", "tickers": ["NO Leakages", "Minor Leakages", "Inoperable"]}, {"label": "Sump Tank", "tickers": ["Sump Tank Level OK", "Sump Tank High", "Inoperable"]}, {"label": "RPM, Frequency, Vibrations", "tickers": ["RPM, Frequency, Vibrations OK", "RPM, Frequency, Vibrations Observed Deviation", "Inoperable"]}]}, {"id": "6.18.3", "section": "Engine Lower Deck", "subGroup": "Generator Engines", "checkpoint": "GE no. 3", "subchecks": [{"label": null, "tickers": ["Standby Ready / In AUTO", "Stopped / In Manual", "Fault / Abnormal / Tripped"]}, {"label": "Temperatures", "tickers": ["Temperatures NORMAl", "Temperatures Deviation", "Inoperable"]}, {"label": "Pressures", "tickers": ["Pressures NORMAL", "Pressures Deviation", "Inoperable"]}, {"label": "Leakages", "tickers": ["NO Leakages", "Minor Leakages", "Inoperable"]}, {"label": "Sump Tank", "tickers": ["Sump Tank Level OK", "Sump Tank High", "Inoperable"]}, {"label": "RPM, Frequency, Vibrations", "tickers": ["RPM, Frequency, Vibrations OK", "RPM, Frequency, Vibrations Observed Deviation", "Inoperable"]}]}, {"id": "6.19", "section": "Engine Lower Deck", "subGroup": "Generator Engines", "checkpoint": "GE Jacket Heater Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.20", "section": "Engine Lower Deck", "subGroup": "Generator Engines", "checkpoint": "Sewage Treatment Plant", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.21", "section": "Engine Lower Deck", "subGroup": "Generator Engines", "checkpoint": "Boiler Fuel Pump Supply Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.23.1", "section": "Engine Lower Deck", "subGroup": "Purifiers", "checkpoint": "ME LO Purifier", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.23.2", "section": "Engine Lower Deck", "subGroup": "Purifiers", "checkpoint": "GE LO Purifier", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.23.3", "section": "Engine Lower Deck", "subGroup": "Purifiers", "checkpoint": "No. 1 FO Purifer", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "6.23.4", "section": "Engine Lower Deck", "subGroup": "Purifiers", "checkpoint": "No. 2 FO Purifer", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "6.25.1", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "FO Supply Pumps", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.25.2", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "FO Booster Pumps", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.25.3", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "Fuel Heater / Cooler", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.25.4", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "FO Autobackwash Filter Unit", "subchecks": [{"label": null, "tickers": ["Clean / Normal DP", "High Differential", "Bypassed"]}]}, {"id": "6.26", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "Fresh Water Generator", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.27", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "Central FW Coolers", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.28", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "ME Lube Oil Cooler", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.29", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "ME Lube Oil Autobackwash Filters", "subchecks": [{"label": null, "tickers": ["Clean / Normal DP", "High Differential", "Bypassed"]}]}, {"id": "6.30", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "ME Jacket Pre-heater Pump", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.31", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "ME LT Cooling Water Pumps", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.32-NO1", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "LTCW Temperature Contol Valve (NO 1)", "subchecks": [{"label": null, "tickers": ["Open", "Closed", "Set as Required"]}]}, {"id": "6.32-NO2", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "LTCW Temperature Contol Valve (NO 2)", "subchecks": [{"label": null, "tickers": ["Open", "Closed", "Set as Required"]}]}, {"id": "6.32-NO3", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "LTCW Temperature Contol Valve (NO 3)", "subchecks": [{"label": null, "tickers": ["Open", "Closed", "Set as Required"]}]}, {"id": "6.33-NO1", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "HTCW Temperature Control Valve (NO 1)", "subchecks": [{"label": null, "tickers": ["Open", "Closed", "Set as Required"]}]}, {"id": "6.33-NO2", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "HTCW Temperature Control Valve (NO 2)", "subchecks": [{"label": null, "tickers": ["Open", "Closed", "Set as Required"]}]}, {"id": "6.34", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "ME Jacket Cooling Pumps", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "6.35", "section": "Engine Lower Deck", "subGroup": "FO Supply Unit", "checkpoint": "ME Jacket Preheater Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "7.1", "section": "ME Scavenging Air Deck", "subGroup": null, "checkpoint": "ME Local Operating Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "7.2", "section": "ME Scavenging Air Deck", "subGroup": null, "checkpoint": "ME Spring Air and Control Air", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "7.3", "section": "ME Scavenging Air Deck", "subGroup": null, "checkpoint": "ME Pressure and Temperature Transmitters", "subchecks": [{"label": null, "tickers": ["Normal Reading", "Abnormal Reading", "Not Readable"]}]}, {"id": "7.4", "section": "ME Scavenging Air Deck", "subGroup": null, "checkpoint": "ME Local Gauges", "subchecks": [{"label": null, "tickers": ["Normal Reading", "Abnormal Reading", "Not Readable"]}]}, {"id": "7.5", "section": "ME Scavenging Air Deck", "subGroup": null, "checkpoint": "ME Scavenging Air Receiver and Lanterns", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "7.6", "section": "ME Scavenging Air Deck", "subGroup": null, "checkpoint": "ME ECU, CCU, and ACU Panels", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "7.7", "section": "ME Scavenging Air Deck", "subGroup": null, "checkpoint": "ME HPS LO Filter Unit", "subchecks": [{"label": null, "tickers": ["Clean / Normal DP", "High Differential", "Bypassed"]}]}, {"id": "7.8", "section": "ME Scavenging Air Deck", "subGroup": null, "checkpoint": "ME Air Cooler Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.1", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "FO Transfer Pump", "subchecks": [{"label": null, "tickers": ["Standby / Stopped", "Running / Needs Monitoring", "Fault / Abnormal"]}]}, {"id": "8.2", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "MGO Transfer Pump", "subchecks": [{"label": null, "tickers": ["Standby / Stopped", "Running / Needs Monitoring", "Fault / Abnormal"]}]}, {"id": "8.3", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "FWG Ejector Pump", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.4", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "High Sea Chest", "subchecks": [{"label": null, "tickers": ["In service (Open) / Standby Closed", "Minor Leakages", "Major Leakage"]}]}, {"id": "8.5", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Urea Drain Tank and Transfer Pumps", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "8.6", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "MGPS Panel", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "8.7-NO1", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Cooling SW Pumps (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.7-NO2", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Cooling SW Pumps (NO 2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.7-NO3", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Cooling SW Pumps (NO 3)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.8", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Bilge Well STBD", "subchecks": [{"label": null, "tickers": ["Dry / Clean", "Wet", "Oily / Action Req'd"]}]}, {"id": "8.9", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Emergency Bilge Suction", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "8.10-NO1", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Ballast Pumps (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.10-NO2", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Ballast Pumps (NO 2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.11-NO1", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Fire, Bilge, GS Pumps (NO 1)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.11-NO2", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Fire, Bilge, GS Pumps (NO 2)", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.12", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Bilge Well PORT", "subchecks": [{"label": null, "tickers": ["Dry / Clean", "Wet", "Oily / Action Req'd"]}]}, {"id": "8.13", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "OWS Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Auto Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.14", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ICCP Panel", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "8.15", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Boiler Chemical Feed Tank", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "8.16", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Low Sea Chest", "subchecks": [{"label": null, "tickers": ["In service (Open) / Standby Closed", "Minor Leakages", "Major Leakage"]}]}, {"id": "8.17", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "LO Transfer Pumps", "subchecks": [{"label": null, "tickers": ["Standby / Stopped", "Running / Needs Monitoring", "Fault / Abnormal"]}]}, {"id": "8.18.1", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME LO Purifier Supply Pump Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.18.2", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "GE LO Purifier Supply Pump Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.19", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Daily Bilge Pump", "subchecks": [{"label": null, "tickers": ["Standby / Stopped", "Running / Needs Monitoring", "Fault / Abnormal"]}]}, {"id": "8.20", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME Vibration Meter", "subchecks": [{"label": null, "tickers": ["Normal Reading", "Abnormal Reading", "Not Readable"]}]}, {"id": "8.21", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME Crankcase Doors", "subchecks": [{"label": null, "tickers": ["Secured / Normal", "Needs Attention", "Fault"]}]}, {"id": "8.22", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME LO Flow Check", "subchecks": [{"label": null, "tickers": ["OK", "Needs Attention", "N/A"]}]}, {"id": "8.23", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME Oil Mist Detector Units", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.24", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME HPS Pumps and High Pressure Hoses", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.25", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ER Tanktop Port side", "subchecks": [{"label": null, "tickers": ["Dry / Clean", "Wet", "Oily / Action Req'd"]}]}, {"id": "8.26", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME LO Pumps", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.27", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME Flywheel Underneath Bilge Well and Tank Top", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "8.28", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME Turning Gear and Panel", "subchecks": [{"label": null, "tickers": ["OK / No Alarms / Disengaged", "Running and Engaged / Needs Monitoring", "Fault"]}]}, {"id": "8.29", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Air Cooler Drain Pump and OCM", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.30", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Stern Tube LO Aft Seal Tank", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "8.31", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Stern Tube LO Pumps", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.32", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Stern Tube Air Seal Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.33", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ME Shaft Grounding Unit", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.34", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Intermediate Shaft", "subchecks": [{"label": null, "tickers": ["Normal Oil Flow and Level", "Low Oil level / Needs Attention", "Fault"]}]}, {"id": "8.35", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Stern Tube Forward Seal Tank", "subchecks": [{"label": null, "tickers": ["Level Normal", "Level Low", "Level High"]}]}, {"id": "8.36", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Grey Water and Sewage Overboard Storm Valve", "subchecks": [{"label": null, "tickers": ["Set as Required", "Leakage / needs attention", "In Port OPEN / to close and lock"]}]}, {"id": "8.37", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Bilge Well AFT", "subchecks": [{"label": null, "tickers": ["Dry / Clean", "Wet", "Oily / Action Req'd"]}]}, {"id": "8.38", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Aft Tank Top", "subchecks": [{"label": null, "tickers": ["Dry / Clean", "Wet", "Oily / Action Req'd"]}]}, {"id": "8.39", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Sludge Pump", "subchecks": [{"label": null, "tickers": ["Standby / Stopped", "Running / Needs Monitoring", "Fault / Abnormal"]}]}, {"id": "8.40", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "Air Cooler Water mist catcher and drains", "subchecks": [{"label": null, "tickers": ["Running Normally", "Standby / Stopped", "Fault / Abnormal"]}]}, {"id": "8.41", "section": "ER Lower Floor", "subGroup": null, "checkpoint": "ER Tanktop Stbd side.", "subchecks": [{"label": null, "tickers": ["Dry / Clean", "Wet", "Oily / Action Req'd"]}]}, {"id": "9.1", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "Welding Area", "subchecks": [{"label": null, "tickers": ["Clean / Tidy", "Needs Attention", "N/A"]}]}, {"id": "9.2", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "Grinding Machines, Lathe machines and Drilling Machines", "subchecks": [{"label": null, "tickers": ["Clean / Tidy", "Needs Attention", "N/A"]}]}, {"id": "9.3", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "Tools Panel and Storage", "subchecks": [{"label": null, "tickers": ["Clean / Tidy / Secured", "Needs Attention", "N/A"]}]}, {"id": "9.4", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "Spare Parts Rack and Locker", "subchecks": [{"label": null, "tickers": ["Clean / Tidy / Secured", "Needs Attention", "N/A"]}]}, {"id": "9.5", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "Bunker Sample Locker", "subchecks": [{"label": null, "tickers": ["Clean / Tidy / Secured", "Needs Attention", "N/A"]}]}, {"id": "9.6", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "Large Spares and Objects", "subchecks": [{"label": null, "tickers": ["Clean / Tidy / Secured", "Needs Attention", "N/A"]}]}, {"id": "9.7", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "Electrical Workshop", "subchecks": [{"label": null, "tickers": ["Clean / Tidy", "Needs Attention", "N/A"]}]}, {"id": "9.8", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "Electical Spare Rack", "subchecks": [{"label": null, "tickers": ["Clean / Tidy", "Needs Attention", "N/A"]}]}, {"id": "9.9", "section": "Engine Workshop and Spare Room", "subGroup": null, "checkpoint": "ER Ventilation Fan Panel", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Alarm Active", "Fault"]}]}, {"id": "10.1", "section": "Engine Control Room", "subGroup": null, "checkpoint": "AMS Alarms", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Minor Alarm Active", "Fault / Major Alarms"]}]}, {"id": "10.2", "section": "Engine Control Room", "subGroup": null, "checkpoint": "AMS Scan Mimic Pages", "subchecks": [{"label": null, "tickers": ["OK / Readings in Range", "Minor Deviations", "Major Deviations"]}]}, {"id": "10.3", "section": "Engine Control Room", "subGroup": null, "checkpoint": "Valve Remote Control Screen", "subchecks": [{"label": null, "tickers": ["OK / No Alarms", "Minor Alarm Active", "Fault / Major Alarms"]}]}, {"id": "10.4", "section": "Engine Control Room", "subGroup": null, "checkpoint": "Main Switch Board", "subchecks": [{"label": null, "tickers": ["OK / No Alarms / Generators in Auto Standby SET / All Starters Set in AUTO / 220V Insulation OK / 440V Insulation OK", "Alarm Active / Generator NOT in standby / 220V Insulation Low / 440V Insulation Low", "Fault / Generator MSB Alarm / 220V Insulation ZERO / 440V Insulation ZERO"]}]}, {"id": "10.5", "section": "Engine Control Room", "subGroup": null, "checkpoint": "Engine Control Console", "subchecks": [{"label": null, "tickers": ["OK / No Alarms / ME RPM set OK / ME Load OK", "Alarm Active / ME Load too high / ME load too low", "Fault / Major Alarms / Slowdown / Shut down present"]}]}];
+
+// Classify a ticker label into a color tone based on which tier it came from (0=green,1=amber,2=red)
+function tierClass(tierIndex, active) {
+  const base = "px-3 py-1.5 rounded-md text-xs font-medium border transition-colors text-left leading-snug";
+  if (!active) {
+    return base + " border-slate-700 text-slate-400 bg-slate-900/40 hover:border-slate-500 hover:text-slate-200";
+  }
+  if (tierIndex === 0) return base + " border-emerald-500 bg-emerald-500/20 text-emerald-300";
+  if (tierIndex === 1) return base + " border-amber-500 bg-amber-500/20 text-amber-300";
+  return base + " border-rose-500 bg-rose-500/20 text-rose-300";
+}
+
+function groupData(items) {
+  const sections = [];
+  const sectionMap = new Map();
+  for (const item of items) {
+    if (!sectionMap.has(item.section)) {
+      const s = { name: item.section, subGroups: new Map(), order: [] };
+      sectionMap.set(item.section, s);
+      sections.push(s);
+    }
+    const s = sectionMap.get(item.section);
+    const key = item.subGroup || "__none__";
+    if (!s.subGroups.has(key)) {
+      s.subGroups.set(key, []);
+      s.order.push(key);
+    }
+    s.subGroups.get(key).push(item);
+  }
+  return sections;
+}
+
+// A checkpoint is "done" when every subcheck has a selected tier
+function isItemDone(item, status) {
+  return item.subchecks.every((sc, i) => status[`${item.id}::${i}`] !== undefined);
+}
+
+function itemWorstTier(item, status) {
+  let worst = -1;
+  for (let i = 0; i < item.subchecks.length; i++) {
+    const t = status[`${item.id}::${i}`];
+    if (t !== undefined && t > worst) worst = t;
+  }
+  return worst;
+}
+
+export default function RoundsApp() {
+  const [status, setStatus] = useState({}); // key "id::subIndex" -> tierIndex (0,1,2)
+  const [remarks, setRemarks] = useState({});
+  const [openRemark, setOpenRemark] = useState(null);
+  const [expanded, setExpanded] = useState(() => new Set([CHECKLIST[0].section]));
+  const [query, setQuery] = useState("");
+
+  const now = new Date();
+  const [roundDate, setRoundDate] = useState(now.toISOString().slice(0, 10));
+  const [roundTime, setRoundTime] = useState(now.toTimeString().slice(0, 5));
+  const [engrOnDuty, setEngrOnDuty] = useState("");
+  const [chiefEngineer, setChiefEngineer] = useState("");
+
+  const filtered = useMemo(() => {
+    if (!query.trim()) return CHECKLIST;
+    const q = query.toLowerCase();
+    return CHECKLIST.filter(
+      (i) =>
+        i.checkpoint.toLowerCase().includes(q) ||
+        i.section.toLowerCase().includes(q) ||
+        (i.subGroup || "").toLowerCase().includes(q)
+    );
+  }, [query]);
+
+  const sections = useMemo(() => groupData(filtered), [filtered]);
+
+  const totalItems = CHECKLIST.length;
+  const doneItems = CHECKLIST.filter((i) => isItemDone(i, status)).length;
+  const totalSubchecks = CHECKLIST.reduce((n, i) => n + i.subchecks.length, 0);
+  const doneSubchecks = Object.keys(status).length;
+
+  let okCount = 0, attnCount = 0, faultCount = 0;
+  for (const v of Object.values(status)) {
+    if (v === 0) okCount++;
+    else if (v === 1) attnCount++;
+    else faultCount++;
+  }
+
+  function setTier(itemId, subIndex, tier) {
+    const key = `${itemId}::${subIndex}`;
+    setStatus((prev) => {
+      const next = { ...prev };
+      if (next[key] === tier) delete next[key];
+      else next[key] = tier;
+      return next;
+    });
+  }
+
+  function toggleSection(name) {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100" style={{ fontFamily: "ui-sans-serif, system-ui" }}>
+      <div className="sticky top-0 z-10 bg-slate-950/95 backdrop-blur border-b border-slate-800">
+        <div className="max-w-3xl mx-auto px-4 pt-4 pb-3">
+          <div>
+            <h1 className="text-lg font-semibold tracking-tight text-slate-50">Engine Room Rounds</h1>
+            <p className="text-xs text-slate-500 mt-0.5">MV Queen Trader &amp; Sister Vessels</p>
+          </div>
+
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <div>
+              <div className="text-[10px] text-slate-500 mb-0.5">Date</div>
+              <input
+                type="date"
+                value={roundDate}
+                onChange={(e) => setRoundDate(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <div className="text-[10px] text-slate-500 mb-0.5">Time</div>
+              <input
+                type="time"
+                value={roundTime}
+                onChange={(e) => setRoundTime(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <div className="text-[10px] text-slate-500 mb-0.5">Engr. on Duty</div>
+              <input
+                value={engrOnDuty}
+                onChange={(e) => setEngrOnDuty(e.target.value)}
+                placeholder="Name / initials"
+                className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+            <div>
+              <div className="text-[10px] text-slate-500 mb-0.5">Chief Engineer</div>
+              <input
+                value={chiefEngineer}
+                onChange={(e) => setChiefEngineer(e.target.value)}
+                placeholder="Name / initials"
+                className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500"
+              />
+            </div>
+          </div>
+
+          <div className="mt-3 flex items-center gap-3">
+            <div className="flex-1 h-2 rounded-full bg-slate-800 overflow-hidden">
+              <div
+                className="h-full bg-amber-500 transition-all"
+                style={{ width: `${(doneItems / totalItems) * 100}%` }}
+              />
+            </div>
+            <span className="text-xs text-slate-400 tabular-nums whitespace-nowrap">
+              {doneItems} / {totalItems} items
+            </span>
+          </div>
+
+          <div className="mt-2 flex gap-3 text-xs">
+            <span className="text-emerald-400">{okCount} OK</span>
+            <span className="text-amber-400">{attnCount} attention</span>
+            <span className="text-rose-400">{faultCount} fault</span>
+            <span className="text-slate-600 ml-auto">{doneSubchecks}/{totalSubchecks} points</span>
+          </div>
+
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search checkpoint or area..."
+            className="mt-3 w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500"
+          />
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 py-4 space-y-3">
+        {sections.map((section) => {
+          const sectionItems = section.order.flatMap((k) => section.subGroups.get(k));
+          const sectionDone = sectionItems.filter((i) => isItemDone(i, status)).length;
+          const isOpen = expanded.has(section.name) || query.trim().length > 0;
+
+          return (
+            <div key={section.name} className="rounded-xl border border-slate-800 bg-slate-900/40 overflow-hidden">
+              <button
+                onClick={() => toggleSection(section.name)}
+                className="w-full flex items-center justify-between px-4 py-3 hover:bg-slate-900/70 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className="text-slate-500 text-xs transition-transform inline-block"
+                    style={{ transform: isOpen ? "rotate(90deg)" : "rotate(0deg)" }}
+                  >
+                    ▶
+                  </span>
+                  <span className="font-medium text-sm text-slate-100">{section.name}</span>
+                </div>
+                <span className="text-xs text-slate-500 tabular-nums">
+                  {sectionDone}/{sectionItems.length}
+                </span>
+              </button>
+
+              {isOpen && (
+                <div className="border-t border-slate-800 divide-y divide-slate-800/70">
+                  {section.order.map((subKey) => {
+                    const items = section.subGroups.get(subKey);
+                    return (
+                      <div key={subKey}>
+                        {subKey !== "__none__" && (
+                          <div className="px-4 pt-2.5 pb-1 text-[11px] uppercase tracking-wide text-amber-500/80 font-semibold bg-slate-900/30">
+                            {subKey}
+                          </div>
+                        )}
+                        {items.map((item) => {
+                          const worst = itemWorstTier(item, status);
+                          return (
+                            <div key={item.id} className="px-4 py-2.5">
+                              <div className="flex items-start justify-between gap-2">
+                                <div className="flex items-baseline gap-2 min-w-0">
+                                  <span className="text-[10px] text-slate-600 font-mono shrink-0 mt-0.5">
+                                    {item.id}
+                                  </span>
+                                  <span className="text-sm text-slate-200 leading-snug">{item.checkpoint}</span>
+                                  {worst === 2 && <span className="text-rose-500 text-xs">●</span>}
+                                  {worst === 1 && <span className="text-amber-500 text-xs">●</span>}
+                                </div>
+                                <button
+                                  onClick={() => setOpenRemark(openRemark === item.id ? null : item.id)}
+                                  className={
+                                    "text-[10px] shrink-0 px-1.5 py-0.5 rounded border " +
+                                    (remarks[item.id]
+                                      ? "border-amber-600 text-amber-400"
+                                      : "border-slate-800 text-slate-600 hover:text-slate-400")
+                                  }
+                                >
+                                  note
+                                </button>
+                              </div>
+
+                              <div className="mt-2 space-y-1.5">
+                                {item.subchecks.map((sc, subIndex) => (
+                                  <div key={subIndex}>
+                                    {sc.label && (
+                                      <div className="text-[10px] text-slate-500 mb-1">{sc.label}</div>
+                                    )}
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {sc.tickers.map((label, tierIndex) => (
+                                        <button
+                                          key={tierIndex}
+                                          onClick={() => setTier(item.id, subIndex, tierIndex)}
+                                          className={tierClass(
+                                            tierIndex,
+                                            status[`${item.id}::${subIndex}`] === tierIndex
+                                          )}
+                                        >
+                                          {label}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+
+                              {openRemark === item.id && (
+                                <textarea
+                                  autoFocus
+                                  value={remarks[item.id] || ""}
+                                  onChange={(e) =>
+                                    setRemarks((prev) => ({ ...prev, [item.id]: e.target.value }))
+                                  }
+                                  placeholder="Remarks..."
+                                  rows={2}
+                                  className="mt-2 w-full bg-slate-950 border border-slate-800 rounded-md px-2 py-1.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-500"
+                                />
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 pb-8">
+        <button className="w-full py-3 rounded-lg bg-amber-500 text-slate-950 font-semibold text-sm hover:bg-amber-400 transition-colors">
+          Submit Round — {roundDate} {roundTime} ({doneItems}/{totalItems} items, {doneSubchecks}/{totalSubchecks} points)
+        </button>
+        {(!engrOnDuty && !chiefEngineer) && (
+          <p className="text-center text-[10px] text-slate-600 mt-2">
+            Add Engr. on Duty or Chief Engineer before submitting
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
