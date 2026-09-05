@@ -1,4 +1,4 @@
-import { colors, spacing, typography, radius } from '../theme';
+import { spacing, typography, radius, useTheme } from '../theme';
 
 interface TimeFieldProps {
   value: string;
@@ -6,11 +6,13 @@ interface TimeFieldProps {
 }
 
 export function TimeField({ value, onChange }: TimeFieldProps) {
+  const { colors, mode } = useTheme();
   return (
     <input
       type="time"
       value={value}
       onChange={(e) => onChange(e.target.value)}
+      className="rounds-datetime-input"
       style={{
         backgroundColor: colors.panel,
         border: `1px solid ${colors.border}`,
@@ -21,10 +23,10 @@ export function TimeField({ value, onChange }: TimeFieldProps) {
         paddingBottom: 8,
         fontSize: typography.small.fontSize,
         color: colors.textSecondary,
-        fontFamily: 'inherit',
+        fontFamily: typography.systemFont,
         width: '100%',
         boxSizing: 'border-box',
-        colorScheme: 'light',
+        colorScheme: mode,
       }}
     />
   );

@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import type { Tier } from '../types/checklist';
-import { colors, tierColors, spacing, radius, typography } from '../theme';
+import { spacing, radius, typography, useTheme } from '../theme';
 
 interface TierButtonProps {
   text: string;
@@ -10,6 +10,7 @@ interface TierButtonProps {
 }
 
 export function TierButton({ text, tier, selected, onPress }: TierButtonProps) {
+  const { colors, tierColors } = useTheme();
   const active = tierColors[tier];
   const style = selected
     ? { borderColor: active.border, backgroundColor: active.bg }

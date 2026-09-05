@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, typography } from '../theme';
+import { typography, useTheme } from '../theme';
 
 interface TierCountBadgeProps {
   ok: number;
@@ -9,6 +9,7 @@ interface TierCountBadgeProps {
 }
 
 export function TierCountBadge({ ok, attention, fault, compact }: TierCountBadgeProps) {
+  const { colors } = useTheme();
   return (
     <View style={styles.row}>
       <Text style={[styles.text, { color: colors.ok }]}>{ok} OK</Text>

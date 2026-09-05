@@ -13,7 +13,7 @@ import { HeaderFields } from '../components/HeaderFields';
 import { ChecklistAccordion } from '../components/ChecklistAccordion';
 import { TierCountBadge } from '../components/TierCountBadge';
 import { SubmitBar } from '../components/SubmitBar';
-import { colors, spacing, typography } from '../theme';
+import { spacing, typography, useTheme, type ColorPalette } from '../theme';
 
 type Props = NativeStackScreenProps<HistoryStackParamList, 'RoundDetail'>;
 
@@ -21,6 +21,8 @@ const ALL_SECTIONS = groupData(CHECKLIST);
 const ALL_SECTION_NAMES = ALL_SECTIONS.map((s) => s.name);
 
 export function RoundDetailScreen({ route, navigation }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const { roundId } = route.params;
   const [round, setRound] = useState<RoundEntry | null | undefined>(undefined);
   const [expanded, setExpanded] = useState<Set<string>>(() => new Set(ALL_SECTION_NAMES));
@@ -115,32 +117,34 @@ export function RoundDetailScreen({ route, navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  flex: {
-    flex: 1,
-  },
-  loading: {
-    padding: spacing.lg,
-    color: colors.textMuted,
-    fontSize: typography.body.fontSize,
-  },
-  header: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.md,
-    backgroundColor: colors.panel,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
-  },
-  badgeRow: {
-    marginTop: spacing.sm,
-  },
-  scrollContent: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    flex: {
+      flex: 1,
+    },
+    loading: {
+      padding: spacing.lg,
+      color: colors.textMuted,
+      fontSize: typography.body.fontSize,
+    },
+    header: {
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.md,
+      paddingBottom: spacing.md,
+      backgroundColor: colors.panel,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.line,
+    },
+    badgeRow: {
+      marginTop: spacing.sm,
+    },
+    scrollContent: {
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+    },
+  });
+}

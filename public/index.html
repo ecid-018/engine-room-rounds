@@ -34,6 +34,23 @@
         flex: 1;
       }
     </style>
+    <!-- Browsers give the internal segments of <input type="date"/"time">
+         their own UA font regardless of the input's own font-family; these
+         pseudo-elements are the only way to override that. -->
+    <style id="datetime-input-font">
+      .rounds-datetime-input,
+      .rounds-datetime-input::-webkit-datetime-edit,
+      .rounds-datetime-input::-webkit-datetime-edit-fields-wrapper,
+      .rounds-datetime-input::-webkit-datetime-edit-text,
+      .rounds-datetime-input::-webkit-datetime-edit-month-field,
+      .rounds-datetime-input::-webkit-datetime-edit-day-field,
+      .rounds-datetime-input::-webkit-datetime-edit-year-field,
+      .rounds-datetime-input::-webkit-datetime-edit-hour-field,
+      .rounds-datetime-input::-webkit-datetime-edit-minute-field,
+      .rounds-datetime-input::-webkit-datetime-edit-ampm-field {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+      }
+    </style>
   </head>
 
   <body>

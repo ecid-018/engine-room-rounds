@@ -1,5 +1,6 @@
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, spacing, typography } from '../theme';
+import { spacing, typography, useTheme, type ColorPalette } from '../theme';
 
 interface EmptyStateProps {
   title: string;
@@ -7,6 +8,8 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({ title, subtitle }: EmptyStateProps) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -15,18 +18,20 @@ export function EmptyState({ title, subtitle }: EmptyStateProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: spacing.xl * 2,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: typography.body.fontSize,
-    color: colors.textMuted,
-  },
-  subtitle: {
-    marginTop: spacing.xs,
-    fontSize: typography.small.fontSize,
-    color: colors.textDim,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    container: {
+      paddingVertical: spacing.xl * 2,
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: typography.body.fontSize,
+      color: colors.textMuted,
+    },
+    subtitle: {
+      marginTop: spacing.xs,
+      fontSize: typography.small.fontSize,
+      color: colors.textDim,
+    },
+  });
+}

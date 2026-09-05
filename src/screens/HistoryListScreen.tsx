@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
@@ -8,11 +8,13 @@ import type { RoundListRow } from '../types/round';
 import type { HistoryStackParamList } from '../navigation/types';
 import { RoundListItem } from '../components/RoundListItem';
 import { EmptyState } from '../components/EmptyState';
-import { colors, spacing } from '../theme';
+import { spacing, useTheme, type ColorPalette } from '../theme';
 
 type Props = NativeStackScreenProps<HistoryStackParamList, 'HistoryList'>;
 
 export function HistoryListScreen({ navigation }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const [rounds, setRounds] = useState<RoundListRow[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -50,13 +52,15 @@ export function HistoryListScreen({ navigation }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  content: {
-    padding: spacing.lg,
-    flexGrow: 1,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    content: {
+      padding: spacing.lg,
+      flexGrow: 1,
+    },
+  });
+}

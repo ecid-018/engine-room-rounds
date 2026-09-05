@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text } from 'react-native';
 import DateTimePicker, { type DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { colors, spacing, typography, radius } from '../theme';
+import { spacing, typography, radius, useTheme, type ColorPalette } from '../theme';
 import { toHHmm } from '../utils/format';
 
 interface TimeFieldProps {
@@ -17,6 +17,8 @@ function parseHHmm(value: string): Date {
 }
 
 export function TimeField({ value, onChange }: TimeFieldProps) {
+  const { colors, mode } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const [showPicker, setShowPicker] = useState(false);
   const dateValue = parseHHmm(value);
 
@@ -32,7 +34,7 @@ export function TimeField({ value, onChange }: TimeFieldProps) {
         value={dateValue}
         mode="time"
         display="compact"
-        themeVariant="light"
+        themeVariant={mode}
         accentColor={colors.navy}
         onChange={handleChange}
         style={styles.iosPicker}
@@ -52,20 +54,22 @@ export function TimeField({ value, onChange }: TimeFieldProps) {
   );
 }
 
-const styles = StyleSheet.create({
-  field: {
-    backgroundColor: colors.panel,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 8,
-  },
-  fieldText: {
-    fontSize: typography.small.fontSize,
-    color: colors.textSecondary,
-  },
-  iosPicker: {
-    alignSelf: 'flex-start',
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    field: {
+      backgroundColor: colors.panel,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius.sm,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 8,
+    },
+    fieldText: {
+      fontSize: typography.small.fontSize,
+      color: colors.textSecondary,
+    },
+    iosPicker: {
+      alignSelf: 'flex-start',
+    },
+  });
+}

@@ -1,7 +1,8 @@
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import type { SubCheck, Tier } from '../types/checklist';
 import { statusKey } from '../utils/grouping';
-import { colors, spacing, typography } from '../theme';
+import { spacing, typography, useTheme, type ColorPalette } from '../theme';
 import { TierButton } from './TierButton';
 
 interface SubCheckRowProps {
@@ -13,6 +14,8 @@ interface SubCheckRowProps {
 }
 
 export function SubCheckRow({ checkpointId, subIndex, subcheck, status, onSelectTier }: SubCheckRowProps) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const selectedTier = status[statusKey(checkpointId, subIndex)];
 
   return (
@@ -36,21 +39,23 @@ export function SubCheckRow({ checkpointId, subIndex, subcheck, status, onSelect
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: spacing.xs,
-  },
-  label: {
-    fontSize: typography.label.fontSize,
-    fontWeight: typography.label.fontWeight,
-    letterSpacing: typography.label.letterSpacing,
-    textTransform: 'uppercase',
-    color: colors.muted,
-    marginBottom: 4,
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.xs,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    container: {
+      marginTop: spacing.xs,
+    },
+    label: {
+      fontSize: typography.label.fontSize,
+      fontWeight: typography.label.fontWeight,
+      letterSpacing: typography.label.letterSpacing,
+      textTransform: 'uppercase',
+      color: colors.muted,
+      marginBottom: 4,
+    },
+    row: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.xs,
+    },
+  });
+}

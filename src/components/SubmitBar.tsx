@@ -1,5 +1,6 @@
+import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { colors, spacing, typography, radius } from '../theme';
+import { spacing, typography, radius, useTheme, type ColorPalette } from '../theme';
 
 interface SubmitBarProps {
   label: string;
@@ -9,6 +10,9 @@ interface SubmitBarProps {
 }
 
 export function SubmitBar({ label, onPress, disabled, helperText }: SubmitBarProps) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.container}>
       <Pressable
@@ -26,41 +30,43 @@ export function SubmitBar({ label, onPress, disabled, helperText }: SubmitBarPro
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.md,
-    backgroundColor: colors.bg,
-    borderTopWidth: 1,
-    borderTopColor: colors.border,
-  },
-  button: {
-    backgroundColor: colors.navy,
-    borderRadius: radius.md,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  buttonPressed: {
-    backgroundColor: colors.navyDark,
-  },
-  buttonDisabled: {
-    backgroundColor: colors.panel,
-    borderWidth: 1,
-    borderColor: colors.line,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: typography.body.fontSize,
-    fontWeight: '700',
-  },
-  buttonTextDisabled: {
-    color: colors.muted,
-  },
-  helper: {
-    marginTop: spacing.xs,
-    textAlign: 'center',
-    fontSize: typography.tiny.fontSize,
-    color: colors.muted,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    container: {
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.sm,
+      paddingBottom: spacing.md,
+      backgroundColor: colors.bg,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+    },
+    button: {
+      backgroundColor: colors.navy,
+      borderRadius: radius.md,
+      paddingVertical: 14,
+      alignItems: 'center',
+    },
+    buttonPressed: {
+      backgroundColor: colors.navyDark,
+    },
+    buttonDisabled: {
+      backgroundColor: colors.panel,
+      borderWidth: 1,
+      borderColor: colors.line,
+    },
+    buttonText: {
+      color: '#ffffff',
+      fontSize: typography.body.fontSize,
+      fontWeight: '700',
+    },
+    buttonTextDisabled: {
+      color: colors.muted,
+    },
+    helper: {
+      marginTop: spacing.xs,
+      textAlign: 'center',
+      fontSize: typography.tiny.fontSize,
+      color: colors.muted,
+    },
+  });
+}

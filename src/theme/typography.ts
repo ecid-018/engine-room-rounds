@@ -1,12 +1,8 @@
 export const systemFont =
   '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 
-// Checkpoint IDs are still visually distinct (small/muted) but use the same
-// system font as the Tank Calculator, not a monospace face.
-export const monospace = systemFont;
-
 export const typography = {
-  monospace,
+  systemFont,
   title: { fontSize: 16, fontWeight: '700' as const, letterSpacing: 0.2 },
   sheetTitle: { fontSize: 13, fontWeight: '700' as const, letterSpacing: 0.9 },
   subtitle: { fontSize: 11 },

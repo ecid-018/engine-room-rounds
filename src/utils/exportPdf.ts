@@ -83,7 +83,7 @@ export function buildRoundHtml(round: RoundEntry): string {
 </head>
 <body>
   <h1>Engine Room Rounds</h1>
-  <div class="subtitle">MV Queen Trader &amp; Sister Vessels</div>
+  <div class="subtitle">MV Queen Trader - Xiangyu XY123</div>
   <div class="meta">
     <div><div class="label">Date</div>${escapeHtml(formatDisplayDate(round.date))}</div>
     <div><div class="label">Time</div>${escapeHtml(round.time)}</div>

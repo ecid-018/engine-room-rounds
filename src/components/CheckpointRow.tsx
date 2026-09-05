@@ -1,7 +1,8 @@
+import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import type { Checkpoint, Tier } from '../types/checklist';
 import { itemWorstTier } from '../utils/grouping';
-import { colors, spacing, typography, tierColors, radius } from '../theme';
+import { spacing, typography, radius, useTheme, type ColorPalette } from '../theme';
 import { SubCheckRow } from './SubCheckRow';
 
 interface CheckpointRowProps {
@@ -25,6 +26,8 @@ export function CheckpointRow({
   onToggleRemark,
   onChangeRemark,
 }: CheckpointRowProps) {
+  const { colors, tierColors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const worst = itemWorstTier(item, status);
   const dotColor = worst === 2 ? tierColors[2].dot : worst === 1 ? tierColors[1].dot : null;
 
@@ -78,81 +81,83 @@ export function CheckpointRow({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: colors.lineSoft,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: spacing.sm,
-  },
-  titleWrap: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    flexWrap: 'wrap',
-    flexShrink: 1,
-    gap: spacing.xs,
-  },
-  id: {
-    fontSize: typography.tiny.fontSize,
-    color: colors.textDim,
-    fontVariant: ['tabular-nums'],
-  },
-  name: {
-    fontSize: typography.body.fontSize,
-    color: colors.textSecondary,
-    lineHeight: 18,
-  },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  noteButton: {
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: colors.border,
-  },
-  noteText: {
-    fontSize: typography.tiny.fontSize,
-    color: colors.textDim,
-  },
-  noteTextActive: {
-    color: colors.accent,
-    borderColor: colors.accent,
-  },
-  remarkInput: {
-    marginTop: spacing.sm,
-    backgroundColor: colors.panel,
-    borderWidth: 1,
-    borderColor: colors.line,
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 6,
-    fontSize: typography.small.fontSize,
-    color: colors.ink,
-    minHeight: 44,
-    textAlignVertical: 'top',
-  },
-  remarkReadOnly: {
-    marginTop: spacing.sm,
-    backgroundColor: colors.rowAlt,
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderColor: colors.line,
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 6,
-  },
-  remarkReadOnlyText: {
-    fontSize: typography.small.fontSize,
-    color: colors.textMuted,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    container: {
+      paddingHorizontal: spacing.lg,
+      paddingVertical: 10,
+      borderTopWidth: 1,
+      borderTopColor: colors.lineSoft,
+    },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      gap: spacing.sm,
+    },
+    titleWrap: {
+      flexDirection: 'row',
+      alignItems: 'baseline',
+      flexWrap: 'wrap',
+      flexShrink: 1,
+      gap: spacing.xs,
+    },
+    id: {
+      fontSize: typography.tiny.fontSize,
+      color: colors.textDim,
+      fontVariant: ['tabular-nums'],
+    },
+    name: {
+      fontSize: typography.body.fontSize,
+      color: colors.textSecondary,
+      lineHeight: 18,
+    },
+    dot: {
+      width: 6,
+      height: 6,
+      borderRadius: 3,
+    },
+    noteButton: {
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      borderRadius: 4,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    noteText: {
+      fontSize: typography.tiny.fontSize,
+      color: colors.textDim,
+    },
+    noteTextActive: {
+      color: colors.accent,
+      borderColor: colors.accent,
+    },
+    remarkInput: {
+      marginTop: spacing.sm,
+      backgroundColor: colors.panel,
+      borderWidth: 1,
+      borderColor: colors.line,
+      borderRadius: radius.sm,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 6,
+      fontSize: typography.small.fontSize,
+      color: colors.ink,
+      minHeight: 44,
+      textAlignVertical: 'top',
+    },
+    remarkReadOnly: {
+      marginTop: spacing.sm,
+      backgroundColor: colors.rowAlt,
+      borderWidth: 1,
+      borderStyle: 'dashed',
+      borderColor: colors.line,
+      borderRadius: radius.sm,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 6,
+    },
+    remarkReadOnlyText: {
+      fontSize: typography.small.fontSize,
+      color: colors.textMuted,
+    },
+  });
+}

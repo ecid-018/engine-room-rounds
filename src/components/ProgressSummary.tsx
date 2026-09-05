@@ -1,5 +1,6 @@
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors, spacing, typography } from '../theme';
+import { spacing, typography, useTheme, type ColorPalette } from '../theme';
 import { TierCountBadge } from './TierCountBadge';
 
 interface ProgressSummaryProps {
@@ -21,6 +22,8 @@ export function ProgressSummary({
   attentionCount,
   faultCount,
 }: ProgressSummaryProps) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const pct = totalItems > 0 ? (doneItems / totalItems) * 100 : 0;
 
   return (
@@ -43,39 +46,41 @@ export function ProgressSummary({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: spacing.sm,
-  },
-  barRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-  },
-  barTrack: {
-    flex: 1,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: colors.lineSoft,
-    overflow: 'hidden',
-  },
-  barFill: {
-    height: '100%',
-    backgroundColor: colors.accent,
-    borderRadius: 4,
-  },
-  count: {
-    fontSize: typography.tiny.fontSize,
-    color: colors.textMuted,
-  },
-  badgeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: spacing.xs,
-  },
-  points: {
-    marginLeft: 'auto',
-    fontSize: typography.tiny.fontSize,
-    color: colors.textDim,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    container: {
+      marginTop: spacing.sm,
+    },
+    barRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: spacing.sm,
+    },
+    barTrack: {
+      flex: 1,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: colors.lineSoft,
+      overflow: 'hidden',
+    },
+    barFill: {
+      height: '100%',
+      backgroundColor: colors.accent,
+      borderRadius: 4,
+    },
+    count: {
+      fontSize: typography.tiny.fontSize,
+      color: colors.textMuted,
+    },
+    badgeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: spacing.xs,
+    },
+    points: {
+      marginLeft: 'auto',
+      fontSize: typography.tiny.fontSize,
+      color: colors.textDim,
+    },
+  });
+}

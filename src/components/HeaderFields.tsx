@@ -1,8 +1,12 @@
+import { useMemo } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { colors, spacing, typography, radius } from '../theme';
+import { spacing, typography, radius, useTheme, type ColorPalette } from '../theme';
 import { DateField } from './DateField';
 import { TimeField } from './TimeField';
+import { SegmentedSelect } from './SegmentedSelect';
 import { formatDisplayDate } from '../utils/format';
+
+const ENGINEER_ON_DUTY_OPTIONS = ['2/E', '3/E', '4/E'];
 
 interface HeaderFieldsProps {
   date: string;
@@ -27,6 +31,9 @@ export function HeaderFields({
   onChangeEngineerOnDuty,
   onChangeChiefEngineer,
 }: HeaderFieldsProps) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.grid}>
       <View style={styles.cell}>
@@ -50,12 +57,10 @@ export function HeaderFields({
         {readOnly ? (
           <Text style={styles.readOnlyValue}>{engineerOnDuty || '—'}</Text>
         ) : (
-          <TextInput
+          <SegmentedSelect
+            options={ENGINEER_ON_DUTY_OPTIONS}
             value={engineerOnDuty}
-            onChangeText={onChangeEngineerOnDuty}
-            placeholder="Name / initials"
-            placeholderTextColor={colors.textDim}
-            style={styles.input}
+            onChange={(v) => onChangeEngineerOnDuty?.(v)}
           />
         )}
       </View>
@@ -77,37 +82,39 @@ export function HeaderFields({
   );
 }
 
-const styles = StyleSheet.create({
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: spacing.sm,
-  },
-  cell: {
-    flexBasis: '47%',
-    flexGrow: 1,
-  },
-  label: {
-    fontSize: typography.label.fontSize,
-    fontWeight: typography.label.fontWeight,
-    letterSpacing: typography.label.letterSpacing,
-    textTransform: 'uppercase',
-    color: colors.muted,
-    marginBottom: 4,
-  },
-  input: {
-    backgroundColor: colors.panel,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 8,
-    fontSize: typography.small.fontSize,
-    color: colors.textSecondary,
-  },
-  readOnlyValue: {
-    fontSize: typography.small.fontSize,
-    color: colors.textSecondary,
-    paddingVertical: 8,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    grid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: spacing.sm,
+    },
+    cell: {
+      flexBasis: '47%',
+      flexGrow: 1,
+    },
+    label: {
+      fontSize: typography.label.fontSize,
+      fontWeight: typography.label.fontWeight,
+      letterSpacing: typography.label.letterSpacing,
+      textTransform: 'uppercase',
+      color: colors.muted,
+      marginBottom: 4,
+    },
+    input: {
+      backgroundColor: colors.panel,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: radius.sm,
+      paddingHorizontal: spacing.sm,
+      paddingVertical: 8,
+      fontSize: typography.small.fontSize,
+      color: colors.textSecondary,
+    },
+    readOnlyValue: {
+      fontSize: typography.small.fontSize,
+      color: colors.textSecondary,
+      paddingVertical: 8,
+    },
+  });
+}

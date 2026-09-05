@@ -1,5 +1,5 @@
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoundForm } from '../hooks/useRoundForm';
 import { HeaderFields } from '../components/HeaderFields';
@@ -8,13 +8,16 @@ import { SearchBar } from '../components/SearchBar';
 import { ChecklistAccordion } from '../components/ChecklistAccordion';
 import { SubmitBar } from '../components/SubmitBar';
 import { EmptyState } from '../components/EmptyState';
-import { colors, spacing, typography } from '../theme';
+import { ThemeToggleButton } from '../components/ThemeToggleButton';
+import { spacing, typography, useTheme, type ColorPalette } from '../theme';
 import { statusMapToAnswers } from '../utils/roundConversion';
 import { generateRoundId } from '../utils/id';
 import { insertRound } from '../storage/roundsRepository';
 import type { RoundEntry } from '../types/round';
 
 export function NewRoundScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const form = useRoundForm();
   const [submitting, setSubmitting] = useState(false);
 
@@ -51,8 +54,11 @@ export function NewRoundScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
         <View style={styles.topbar}>
-          <Text style={styles.title}>Engine Room Rounds</Text>
-          <Text style={styles.subtitle}>MV Queen Trader &amp; Sister Vessels</Text>
+          <View style={styles.topbarTextWrap}>
+            <Text style={styles.title}>Engine Room Rounds</Text>
+            <Text style={styles.subtitle}>MV Queen Trader - Xiangyu XY123</Text>
+          </View>
+          <ThemeToggleButton />
         </View>
 
         <View style={styles.controlsSheet}>
@@ -116,41 +122,49 @@ export function NewRoundScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: colors.navy,
-  },
-  flex: {
-    flex: 1,
-    backgroundColor: colors.bg,
-  },
-  topbar: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.sm,
-    paddingBottom: spacing.sm,
-    backgroundColor: colors.navy,
-  },
-  title: {
-    fontSize: typography.title.fontSize,
-    fontWeight: typography.title.fontWeight,
-    letterSpacing: typography.title.letterSpacing,
-    color: '#ffffff',
-  },
-  subtitle: {
-    fontSize: typography.tiny.fontSize,
-    color: 'rgba(255,255,255,0.75)',
-  },
-  controlsSheet: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.md,
-    backgroundColor: colors.panel,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.line,
-  },
-  scrollContent: {
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.navy,
+    },
+    flex: {
+      flex: 1,
+      backgroundColor: colors.bg,
+    },
+    topbar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.sm,
+      paddingBottom: spacing.sm,
+      backgroundColor: colors.navy,
+    },
+    topbarTextWrap: {
+      flexShrink: 1,
+    },
+    title: {
+      fontSize: typography.title.fontSize,
+      fontWeight: typography.title.fontWeight,
+      letterSpacing: typography.title.letterSpacing,
+      color: '#ffffff',
+    },
+    subtitle: {
+      fontSize: typography.tiny.fontSize,
+      color: 'rgba(255,255,255,0.75)',
+    },
+    controlsSheet: {
+      paddingHorizontal: spacing.lg,
+      paddingTop: spacing.md,
+      paddingBottom: spacing.md,
+      backgroundColor: colors.panel,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.line,
+    },
+    scrollContent: {
+      paddingHorizontal: spacing.lg,
+      paddingVertical: spacing.md,
+    },
+  });
+}

@@ -1,13 +1,17 @@
+import { useMemo } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NewRoundScreen } from '../screens/NewRoundScreen';
 import { HistoryStackNavigator } from './HistoryStackNavigator';
-import { colors, typography } from '../theme';
+import { typography, useTheme, type ColorPalette } from '../theme';
 import type { RootTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
 export function RootNavigator() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -24,13 +28,15 @@ export function RootNavigator() {
   );
 }
 
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: colors.navy,
-    borderTopColor: colors.navyDark,
-  },
-  tabBarLabel: {
-    fontSize: typography.tiny.fontSize,
-    fontWeight: '600',
-  },
-});
+function createStyles(colors: ColorPalette) {
+  return StyleSheet.create({
+    tabBar: {
+      backgroundColor: colors.navy,
+      borderTopColor: colors.navyDark,
+    },
+    tabBarLabel: {
+      fontSize: typography.tiny.fontSize,
+      fontWeight: '600',
+    },
+  });
+}
