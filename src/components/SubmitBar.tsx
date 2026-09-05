@@ -36,31 +36,31 @@ const styles = StyleSheet.create({
     borderTopColor: colors.border,
   },
   button: {
-    backgroundColor: colors.amber,
+    backgroundColor: colors.navy,
     borderRadius: radius.md,
     paddingVertical: 14,
     alignItems: 'center',
   },
   buttonPressed: {
-    opacity: 0.85,
+    backgroundColor: colors.navyDark,
   },
   buttonDisabled: {
     backgroundColor: colors.panel,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.line,
   },
   buttonText: {
-    color: colors.bg,
+    color: '#ffffff',
     fontSize: typography.body.fontSize,
     fontWeight: '700',
   },
   buttonTextDisabled: {
-    color: colors.textDim,
+    color: colors.muted,
   },
   helper: {
     marginTop: spacing.xs,
     textAlign: 'center',
     fontSize: typography.tiny.fontSize,
-    color: colors.textDim,
+    color: colors.muted,
   },
 });

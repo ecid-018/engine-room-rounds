@@ -1,17 +1,17 @@
-import { Platform } from 'react-native';
+export const systemFont =
+  '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
 
-export const monospace = Platform.select({
-  ios: 'Courier',
-  android: 'monospace',
-  default: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-});
+// Checkpoint IDs are still visually distinct (small/muted) but use the same
+// system font as the Tank Calculator, not a monospace face.
+export const monospace = systemFont;
 
 export const typography = {
   monospace,
-  title: { fontSize: 17, fontWeight: '600' as const },
-  subtitle: { fontSize: 12 },
-  label: { fontSize: 10 },
+  title: { fontSize: 16, fontWeight: '700' as const, letterSpacing: 0.2 },
+  sheetTitle: { fontSize: 13, fontWeight: '700' as const, letterSpacing: 0.9 },
+  subtitle: { fontSize: 11 },
+  label: { fontSize: 11, fontWeight: '600' as const, letterSpacing: 0.5 },
   body: { fontSize: 14 },
-  small: { fontSize: 12 },
-  tiny: { fontSize: 10 },
+  small: { fontSize: 12.5 },
+  tiny: { fontSize: 10.5 },
 };

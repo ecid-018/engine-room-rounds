@@ -13,8 +13,8 @@ export function RootNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: styles.tabBar,
-        tabBarActiveTintColor: colors.amberText,
-        tabBarInactiveTintColor: colors.textDim,
+        tabBarActiveTintColor: '#ffffff',
+        tabBarInactiveTintColor: 'rgba(255,255,255,0.55)',
         tabBarLabelStyle: styles.tabBarLabel,
       }}
     >
@@ -26,10 +26,11 @@ export function RootNavigator() {
 
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: colors.panel,
-    borderTopColor: colors.border,
+    backgroundColor: colors.navy,
+    borderTopColor: colors.navyDark,
   },
   tabBarLabel: {
     fontSize: typography.tiny.fontSize,
+    fontWeight: '600',
   },
 });

@@ -64,8 +64,13 @@ const styles = StyleSheet.create({
   flag: {
     fontSize: typography.tiny.fontSize,
     fontWeight: '700',
-    color: colors.redText,
+    color: '#ffffff',
+    backgroundColor: colors.errLine,
     letterSpacing: 0.5,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: 999,
+    overflow: 'hidden',
   },
   signedBy: {
     fontSize: typography.small.fontSize,

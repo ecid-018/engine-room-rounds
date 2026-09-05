@@ -50,10 +50,12 @@ export function NewRoundScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
-        <View style={styles.header}>
+        <View style={styles.topbar}>
           <Text style={styles.title}>Engine Room Rounds</Text>
           <Text style={styles.subtitle}>MV Queen Trader &amp; Sister Vessels</Text>
+        </View>
 
+        <View style={styles.controlsSheet}>
           <HeaderFields
             date={form.date}
             time={form.time}
@@ -117,28 +119,35 @@ export function NewRoundScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.bg,
+    backgroundColor: colors.navy,
   },
   flex: {
     flex: 1,
-  },
-  header: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
     backgroundColor: colors.bg,
+  },
+  topbar: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.sm,
+    backgroundColor: colors.navy,
   },
   title: {
     fontSize: typography.title.fontSize,
     fontWeight: typography.title.fontWeight,
-    color: colors.textPrimary,
+    letterSpacing: typography.title.letterSpacing,
+    color: '#ffffff',
   },
   subtitle: {
     fontSize: typography.tiny.fontSize,
-    color: colors.textFaint,
-    marginBottom: spacing.sm,
+    color: 'rgba(255,255,255,0.75)',
+  },
+  controlsSheet: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.md,
+    backgroundColor: colors.panel,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.line,
   },
   scrollContent: {
     paddingHorizontal: spacing.lg,

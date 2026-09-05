@@ -24,7 +24,7 @@ export function DateField({ value, onChange }: DateFieldProps) {
         fontFamily: 'inherit',
         width: '100%',
         boxSizing: 'border-box',
-        colorScheme: 'dark',
+        colorScheme: 'light',
       }}
     />
   );

@@ -59,26 +59,26 @@ export function buildRoundHtml(round: RoundEntry): string {
 <meta charset="utf-8" />
 <title>Engine Room Round — ${escapeHtml(round.date)}</title>
 <style>
-  body { font-family: -apple-system, Helvetica, Arial, sans-serif; color: #111; margin: 24px; }
-  h1 { font-size: 20px; margin-bottom: 2px; }
-  .subtitle { color: #555; font-size: 12px; margin-bottom: 16px; }
-  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; border: 1px solid #ccc; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
-  .meta .label { color: #777; font-size: 10px; text-transform: uppercase; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #10202b; margin: 24px; }
+  h1 { font-size: 20px; margin-bottom: 2px; color: #0b3d5c; letter-spacing: 0.02em; }
+  .subtitle { color: #5b6b76; font-size: 12px; margin-bottom: 16px; }
+  .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; border: 1px solid #c9d4dc; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 13px; }
+  .meta .label { color: #5b6b76; font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
   .summary { font-size: 13px; margin-bottom: 20px; }
-  .summary .ok { color: #0a7a3d; } .summary .attn { color: #a05a00; } .summary .fault { color: #b3122a; font-weight: bold; }
+  .summary .ok { color: #1c7a4a; } .summary .attn { color: #6b4e00; } .summary .fault { color: #c0392b; font-weight: bold; }
   .section { margin-bottom: 16px; page-break-inside: avoid; }
-  .section h2 { font-size: 14px; border-bottom: 1px solid #ccc; padding-bottom: 4px; margin-bottom: 8px; }
+  .section h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: #0b3d5c; border-bottom: 2px solid #0b3d5c; padding-bottom: 4px; margin-bottom: 8px; }
   .item { margin-bottom: 8px; padding-left: 4px; }
   .itemhead { font-size: 12px; }
-  .itemhead .id { font-family: 'Courier New', monospace; color: #777; margin-right: 6px; }
+  .itemhead .id { color: #5b6b76; margin-right: 6px; }
   .itemhead .name { font-weight: 600; }
   .subcheck { font-size: 11px; margin-left: 10px; margin-top: 2px; }
-  .sublabel { color: #777; }
-  .tierval.ok { color: #0a7a3d; }
-  .tierval.attn { color: #a05a00; }
-  .tierval.fault { color: #b3122a; font-weight: bold; }
-  .tierval.blank { color: #999; font-style: italic; }
-  .remark { font-size: 11px; margin-left: 10px; margin-top: 2px; color: #333; font-style: italic; }
+  .sublabel { color: #5b6b76; }
+  .tierval.ok { color: #1c7a4a; }
+  .tierval.attn { color: #6b4e00; }
+  .tierval.fault { color: #c0392b; font-weight: bold; }
+  .tierval.blank { color: #8a99a3; font-style: italic; }
+  .remark { font-size: 11px; margin-left: 10px; margin-top: 2px; color: #10202b; font-style: italic; }
 </style>
 </head>
 <body>

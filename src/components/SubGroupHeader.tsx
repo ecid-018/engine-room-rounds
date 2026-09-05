@@ -12,15 +12,15 @@ export function SubGroupHeader({ name }: { name: string }) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: spacing.lg,
-    paddingTop: spacing.sm,
-    paddingBottom: 4,
-    backgroundColor: colors.panelAlt,
+    paddingTop: 6,
+    paddingBottom: 6,
+    backgroundColor: colors.subheadBg,
   },
   text: {
     fontSize: typography.tiny.fontSize,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    color: colors.amberText,
-    fontWeight: '600',
+    letterSpacing: 0.8,
+    color: colors.navy,
+    fontWeight: '700',
   },
 });

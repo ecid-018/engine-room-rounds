@@ -42,7 +42,10 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: typography.label.fontSize,
-    color: colors.textFaint,
+    fontWeight: typography.label.fontWeight,
+    letterSpacing: typography.label.letterSpacing,
+    textTransform: 'uppercase',
+    color: colors.muted,
     marginBottom: 4,
   },
   row: {

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Tier } from '../types/checklist';
-import { colors, spacing, typography, tierColors } from '../theme';
+import { colors, spacing, typography, tierColors, radius } from '../theme';
 
 interface SectionAccordionProps {
   name: string;
@@ -43,10 +43,10 @@ export function SectionAccordion({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 12,
+    borderRadius: radius.md,
     borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.panelAlt,
+    borderColor: colors.line,
+    backgroundColor: colors.panel,
     overflow: 'hidden',
     marginBottom: spacing.sm,
   },
@@ -65,15 +65,17 @@ const styles = StyleSheet.create({
   },
   chevron: {
     fontSize: typography.tiny.fontSize,
-    color: colors.textFaint,
+    color: colors.navy,
   },
   chevronOpen: {
     transform: [{ rotate: '90deg' }],
   },
   name: {
-    fontSize: typography.body.fontSize,
-    fontWeight: '600',
-    color: colors.textPrimary,
+    fontSize: typography.sheetTitle.fontSize,
+    fontWeight: typography.sheetTitle.fontWeight,
+    letterSpacing: typography.sheetTitle.letterSpacing,
+    textTransform: 'uppercase',
+    color: colors.navy,
   },
   dot: {
     width: 7,
@@ -82,10 +84,11 @@ const styles = StyleSheet.create({
   },
   count: {
     fontSize: typography.tiny.fontSize,
-    color: colors.textFaint,
+    color: colors.muted,
+    fontVariant: ['tabular-nums'],
   },
   body: {
     borderTopWidth: 1,
-    borderTopColor: colors.border,
+    borderTopColor: colors.line,
   },
 });

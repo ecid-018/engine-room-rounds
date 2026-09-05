@@ -1,7 +1,7 @@
 // Offline support for the GitHub Pages web build. Since Metro's hashed
 // bundle filenames aren't known ahead of time, this caches assets as they're
 // fetched (runtime caching) rather than trying to precache a fixed list.
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = 'engine-room-rounds-' + CACHE_VERSION;
 const SCOPE = '/engine-room-rounds/';
 const APP_SHELL = [SCOPE, SCOPE + 'index.html', SCOPE + 'manifest.json'];

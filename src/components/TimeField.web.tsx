@@ -24,7 +24,7 @@ export function TimeField({ value, onChange }: TimeFieldProps) {
         fontFamily: 'inherit',
         width: '100%',
         boxSizing: 'border-box',
-        colorScheme: 'dark',
+        colorScheme: 'light',
       }}
     />
   );

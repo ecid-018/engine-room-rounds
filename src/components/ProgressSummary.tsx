@@ -56,12 +56,12 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 8,
     borderRadius: 4,
-    backgroundColor: colors.border,
+    backgroundColor: colors.lineSoft,
     overflow: 'hidden',
   },
   barFill: {
     height: '100%',
-    backgroundColor: colors.amber,
+    backgroundColor: colors.accent,
     borderRadius: 4,
   },
   count: {

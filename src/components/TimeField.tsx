@@ -32,8 +32,8 @@ export function TimeField({ value, onChange }: TimeFieldProps) {
         value={dateValue}
         mode="time"
         display="compact"
-        themeVariant="dark"
-        accentColor={colors.amber}
+        themeVariant="light"
+        accentColor={colors.navy}
         onChange={handleChange}
         style={styles.iosPicker}
       />

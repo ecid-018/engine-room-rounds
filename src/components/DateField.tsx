@@ -30,8 +30,8 @@ export function DateField({ value, onChange }: DateFieldProps) {
         value={dateValue}
         mode="date"
         display="compact"
-        themeVariant="dark"
-        accentColor={colors.amber}
+        themeVariant="light"
+        accentColor={colors.navy}
         onChange={handleChange}
         style={styles.iosPicker}
       />

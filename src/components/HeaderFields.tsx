@@ -88,8 +88,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   label: {
-    fontSize: typography.tiny.fontSize,
-    color: colors.textFaint,
+    fontSize: typography.label.fontSize,
+    fontWeight: typography.label.fontWeight,
+    letterSpacing: typography.label.letterSpacing,
+    textTransform: 'uppercase',
+    color: colors.muted,
     marginBottom: 4,
   },
   input: {

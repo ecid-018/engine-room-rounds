@@ -1,18 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootNavigator } from './src/navigation/RootNavigator';
 import { colors } from './src/theme';
 
 const navigationTheme = {
-  ...DarkTheme,
+  ...DefaultTheme,
   colors: {
-    ...DarkTheme.colors,
+    ...DefaultTheme.colors,
     background: colors.bg,
     card: colors.panel,
-    border: colors.border,
-    primary: colors.amber,
-    text: colors.textPrimary,
+    border: colors.line,
+    primary: colors.navy,
+    text: colors.ink,
   },
 };
 

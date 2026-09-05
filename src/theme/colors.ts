@@ -1,35 +1,55 @@
+// Matches the Queen Trader Fuel & Lub Oil Tank Calculator's palette so both
+// vessel apps read as one suite.
 export const colors = {
-  bg: '#020617',
-  panel: '#0f172a',
-  panelAlt: 'rgba(15, 23, 42, 0.4)',
-  border: '#1e293b',
-  borderMuted: 'rgba(30, 41, 59, 0.7)',
+  navy: '#0b3d5c',
+  navyDark: '#072a40',
+  ink: '#10202b',
+  muted: '#5b6b76',
+  line: '#c9d4dc',
+  lineSoft: '#e3eaef',
+  bg: '#eef2f5',
+  panel: '#ffffff',
+  accent: '#0e7490',
+  rowAlt: '#f6f9fb',
+  subheadBg: '#dbe6ed',
 
-  textPrimary: '#f1f5f9',
-  textSecondary: '#cbd5e1',
-  textMuted: '#94a3b8',
-  textFaint: '#64748b',
-  textDim: '#475569',
+  warnBg: '#fff4d6',
+  warnLine: '#d9a400',
+  warnInk: '#6b4e00',
 
-  amber: '#f59e0b',
-  amberMuted: 'rgba(245, 158, 11, 0.2)',
-  amberText: '#fbbf24',
+  errBg: '#fdeaea',
+  errLine: '#c0392b',
+  errInk: '#8e2a20',
 
-  green: '#10b981',
-  greenMuted: 'rgba(16, 185, 129, 0.2)',
-  greenText: '#34d399',
+  ok: '#1c7a4a',
+  okBg: '#e5f3ea',
 
-  red: '#f43f5e',
-  redMuted: 'rgba(244, 63, 94, 0.2)',
-  redText: '#fb7185',
+  // legacy aliases kept so existing component styles keep working
+  textPrimary: '#10202b',
+  textSecondary: '#10202b',
+  textMuted: '#5b6b76',
+  textFaint: '#5b6b76',
+  textDim: '#8a99a3',
 
-  inactiveBorder: '#334155',
-  inactiveText: '#94a3b8',
-  inactiveBg: 'rgba(15, 23, 42, 0.4)',
+  green: '#1c7a4a',
+  greenMuted: '#e5f3ea',
+  greenText: '#1c7a4a',
+
+  red: '#c0392b',
+  redMuted: '#fdeaea',
+  redText: '#8e2a20',
+
+  border: '#c9d4dc',
+  borderMuted: '#e3eaef',
+  panelAlt: '#ffffff',
+
+  inactiveBorder: '#c9d4dc',
+  inactiveText: '#5b6b76',
+  inactiveBg: '#ffffff',
 } as const;
 
 export const tierColors: Record<0 | 1 | 2, { border: string; bg: string; text: string; dot: string }> = {
-  0: { border: colors.green, bg: colors.greenMuted, text: colors.greenText, dot: colors.green },
-  1: { border: colors.amber, bg: colors.amberMuted, text: colors.amberText, dot: colors.amber },
-  2: { border: colors.red, bg: colors.redMuted, text: colors.redText, dot: colors.red },
+  0: { border: colors.ok, bg: colors.okBg, text: colors.ok, dot: colors.ok },
+  1: { border: colors.warnLine, bg: colors.warnBg, text: colors.warnInk, dot: colors.warnLine },
+  2: { border: colors.errLine, bg: colors.errBg, text: colors.errInk, dot: colors.errLine },
 };
